@@ -11,7 +11,7 @@ const SEV_DOT: Record<string, string> = {
   CRITICAL: 'bg-red-500 animate-pulse',
   HIGH:     'bg-orange-500',
   MEDIUM:   'bg-amber-400',
-  LOW:      'bg-slate-400',
+  LOW:      'bg-muted-foreground',
 };
 
 interface Props { alerts?: Alert[]; loading?: boolean; }
@@ -26,8 +26,8 @@ export function CriticalAlertsPanel({ alerts, loading }: Props) {
     qc.invalidateQueries({ queryKey: ['ai', 'health-score'] });
   };
 
-  const critical = alerts?.filter((a) => a.severity === 'CRITICAL' || a.severity === 'HIGH') ?? [];
-  const others   = alerts?.filter((a) => a.severity === 'MEDIUM' || a.severity === 'LOW') ?? [];
+  const critical  = alerts?.filter((a) => a.severity === 'CRITICAL' || a.severity === 'HIGH') ?? [];
+  const others    = alerts?.filter((a) => a.severity === 'MEDIUM'   || a.severity === 'LOW')  ?? [];
   const displayed = [...critical, ...others];
 
   return (
@@ -36,7 +36,7 @@ export function CriticalAlertsPanel({ alerts, loading }: Props) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold">Critical Alerts</CardTitle>
           {!!alerts?.length && (
-            <span className="flex items-center gap-1.5 text-xs text-red-400 font-medium">
+            <span className="flex items-center gap-1.5 text-xs text-destructive font-medium">
               <ShieldAlert className="w-3.5 h-3.5" />
               {alerts.length} active
             </span>
@@ -49,7 +49,7 @@ export function CriticalAlertsPanel({ alerts, loading }: Props) {
           : displayed.length === 0
           ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-2 py-8 text-center">
-              <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
               <p className="text-sm text-muted-foreground">All clear — no active alerts</p>
             </motion.div>
           )
@@ -59,9 +59,9 @@ export function CriticalAlertsPanel({ alerts, loading }: Props) {
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="flex items-start gap-3 p-3 rounded-xl bg-secondary/40 border border-border group hover:border-border/70 transition-colors"
+              className="flex items-start gap-3 p-3 rounded-xl bg-muted/40 border border-border group hover:border-border/70 transition-colors"
             >
-              <span className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${SEV_DOT[alert.severity] ?? 'bg-slate-400'}`} />
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${SEV_DOT[alert.severity] ?? 'bg-muted-foreground'}`} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
                   <AlertSeverityBadge severity={alert.severity} />
@@ -71,7 +71,7 @@ export function CriticalAlertsPanel({ alerts, loading }: Props) {
               </div>
               <button
                 onClick={() => resolve(alert.id)}
-                className="flex-shrink-0 p-1 rounded-lg hover:bg-emerald-500/20 text-muted-foreground hover:text-emerald-400 transition-colors opacity-0 group-hover:opacity-100"
+                className="flex-shrink-0 p-1 rounded-lg hover:bg-emerald-500/15 text-muted-foreground hover:text-emerald-600 transition-colors opacity-0 group-hover:opacity-100"
                 title="Resolve"
               >
                 <CheckCircle2 className="w-4 h-4" />

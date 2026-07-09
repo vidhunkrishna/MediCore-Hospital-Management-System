@@ -18,7 +18,7 @@ function InfoRow({ icon: Icon, label, value }: { icon: React.ElementType; label:
   if (!value) return null;
   return (
     <div className="flex items-start gap-3">
-      <div className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
+      <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
         <Icon className="w-3.5 h-3.5 text-muted-foreground" />
       </div>
       <div>
@@ -50,14 +50,14 @@ export function PatientDetailDrawer({ patientId, onClose, onEdit }: Props) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md z-50 bg-card border-l border-border flex flex-col shadow-2xl overflow-hidden"
+            className="fixed right-0 top-0 h-full w-full max-w-md z-50 bg-card text-card-foreground border-l border-border flex flex-col shadow-2xl overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-border flex-shrink-0">
               <h2 className="font-semibold text-base">Patient Details</h2>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={onEdit}>Edit</Button>
-                <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground transition-colors">
+                <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -95,35 +95,35 @@ export function PatientDetailDrawer({ patientId, onClose, onEdit }: Props) {
                   {/* Stats row */}
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { label: 'Age', value: `${getAge(patient.dob)}y` },
+                      { label: 'Age',    value: `${getAge(patient.dob)}y` },
                       { label: 'Gender', value: patient.gender },
-                      { label: 'Blood', value: patient.bloodType ?? '—' },
+                      { label: 'Blood',  value: patient.bloodType ?? '—' },
                     ].map((s) => (
-                      <div key={s.label} className="bg-secondary/40 rounded-xl p-3 text-center">
+                      <div key={s.label} className="bg-muted/60 rounded-xl p-3 text-center">
                         <p className="text-lg font-bold">{s.value}</p>
                         <p className="text-[10px] text-muted-foreground">{s.label}</p>
                       </div>
                     ))}
                   </div>
 
-                  {/* Contact info */}
+                  {/* Contact */}
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Contact</p>
-                    <InfoRow icon={Phone} label="Phone" value={patient.phone} />
-                    <InfoRow icon={Mail} label="Email" value={patient.email} />
-                    <InfoRow icon={MapPin} label="Address" value={patient.address} />
+                    <InfoRow icon={Phone}         label="Phone"             value={patient.phone} />
+                    <InfoRow icon={Mail}          label="Email"             value={patient.email} />
+                    <InfoRow icon={MapPin}        label="Address"           value={patient.address} />
                     <InfoRow icon={AlertTriangle} label="Emergency Contact" value={patient.emergencyContact} />
                   </div>
 
                   {/* Clinical */}
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Clinical</p>
-                    <InfoRow icon={User} label="Assigned Doctor" value={patient.doctor?.name} />
-                    <InfoRow icon={BedDouble} label="Bed" value={patient.bed ? `${patient.bed.number} — ${patient.bed.ward?.name}` : null} />
-                    <InfoRow icon={Calendar} label="Admitted" value={patient.admittedAt ? formatDate(patient.admittedAt) : null} />
-                    <InfoRow icon={Calendar} label="Discharged" value={patient.dischargedAt ? formatDate(patient.dischargedAt) : null} />
+                    <InfoRow icon={User}     label="Assigned Doctor" value={patient.doctor?.name} />
+                    <InfoRow icon={BedDouble} label="Bed"            value={patient.bed ? `${patient.bed.number} — ${patient.bed.ward?.name}` : null} />
+                    <InfoRow icon={Calendar} label="Admitted"        value={patient.admittedAt ? formatDate(patient.admittedAt) : null} />
+                    <InfoRow icon={Calendar} label="Discharged"      value={patient.dischargedAt ? formatDate(patient.dischargedAt) : null} />
                     {patient.notes && (
-                      <div className="bg-secondary/40 rounded-xl p-3">
+                      <div className="bg-muted/60 rounded-xl p-3">
                         <p className="text-[11px] text-muted-foreground mb-1">Notes</p>
                         <p className="text-sm">{patient.notes}</p>
                       </div>
@@ -137,7 +137,7 @@ export function PatientDetailDrawer({ patientId, onClose, onEdit }: Props) {
                         Recent Appointments ({patient.appointments.length})
                       </p>
                       {patient.appointments.slice(0, 5).map((a) => (
-                        <div key={a.id} className="flex items-center justify-between bg-secondary/40 rounded-xl p-3">
+                        <div key={a.id} className="flex items-center justify-between bg-muted/60 rounded-xl p-3">
                           <div>
                             <p className="text-xs font-medium">{a.type.replace('_', ' ')}</p>
                             <div className="flex items-center gap-1 mt-0.5 text-muted-foreground">

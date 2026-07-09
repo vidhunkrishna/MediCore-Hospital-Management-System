@@ -14,9 +14,9 @@ import { formatDate, formatDateTime, getAge } from '@/lib/utils';
 type ReportType = 'patients' | 'appointments' | 'occupancy';
 
 const REPORT_CARDS = [
-  { id: 'patients' as ReportType, icon: Users, title: 'Patient Summary', description: 'Full patient roster with status and demographics', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-  { id: 'appointments' as ReportType, icon: Calendar, title: 'Appointment Report', description: 'All scheduled and completed appointments', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-  { id: 'occupancy' as ReportType, icon: BedDouble, title: 'Occupancy Report', description: 'Bed utilization and capacity metrics', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  { id: 'patients'     as ReportType, icon: Users,    title: 'Patient Summary',    description: 'Full patient roster with status and demographics', color: 'text-primary',                    bg: 'bg-primary/10' },
+  { id: 'appointments' as ReportType, icon: Calendar, title: 'Appointment Report', description: 'All scheduled and completed appointments',          color: 'text-cyan-600 dark:text-cyan-400',    bg: 'bg-cyan-500/10' },
+  { id: 'occupancy'    as ReportType, icon: BedDouble, title: 'Occupancy Report',  description: 'Bed utilization and capacity metrics',              color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10' },
 ] as const;
 
 function exportToCSV(filename: string, rows: string[][]) {
@@ -32,11 +32,11 @@ function exportToCSV(filename: string, rows: string[][]) {
 
 export function ReportsPage() {
   const [active, setActive] = useState<ReportType>('patients');
-  const { data: overview, isLoading: overviewLoading } = useOverview();
+  const { data: overview,     isLoading: overviewLoading } = useOverview();
   const { data: patientsData, isLoading: patientsLoading } = usePatients({ limit: 100 });
-  const { data: apptData, isLoading: apptLoading } = useAppointments({ limit: 100 });
+  const { data: apptData,     isLoading: apptLoading }     = useAppointments({ limit: 100 });
 
-  const patients = patientsData?.data ?? [];
+  const patients     = patientsData?.data ?? [];
   const appointments = apptData?.data ?? [];
 
   const handleExport = () => {
@@ -62,27 +62,26 @@ export function ReportsPage() {
     } else {
       exportToCSV('occupancy', [
         ['Metric', 'Value'],
-        ['Total Patients', String(overview?.totalPatients ?? 0)],
-        ['Admitted Patients', String(overview?.admittedPatients ?? 0)],
-        ['Critical Patients', String(overview?.criticalPatients ?? 0)],
-        ['Total Beds', String(overview?.totalBeds ?? 0)],
-        ['Occupied Beds', String(overview?.occupiedBeds ?? 0)],
-        ['Occupancy Rate', `${overview?.occupancyRate ?? 0}%`],
-        ["Today's Appointments", String(overview?.todayAppointments ?? 0)],
-        ['Active Alerts', String(overview?.activeAlerts ?? 0)],
+        ['Total Patients',        String(overview?.totalPatients     ?? 0)],
+        ['Admitted Patients',     String(overview?.admittedPatients  ?? 0)],
+        ['Critical Patients',     String(overview?.criticalPatients  ?? 0)],
+        ['Total Beds',            String(overview?.totalBeds         ?? 0)],
+        ['Occupied Beds',         String(overview?.occupiedBeds      ?? 0)],
+        ['Occupancy Rate',        `${overview?.occupancyRate ?? 0}%`],
+        ["Today's Appointments",  String(overview?.todayAppointments ?? 0)],
+        ['Active Alerts',         String(overview?.activeAlerts      ?? 0)],
       ]);
     }
   };
 
   return (
     <div className="space-y-6 max-w-[1400px]">
-      {/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">Reports</h2>
           <p className="text-sm text-muted-foreground">Generate and export hospital data reports</p>
         </div>
-        <Button onClick={handleExport} className="gap-2" variant="outline" size="sm">
+        <Button onClick={handleExport} variant="outline" size="sm" className="gap-2">
           <Download className="w-4 h-4" /> Export CSV
         </Button>
       </motion.div>
@@ -92,10 +91,10 @@ export function ReportsPage() {
         {overviewLoading
           ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl" />)
           : [
-              { label: 'Total Patients', value: overview?.totalPatients ?? 0, icon: Users },
-              { label: "Today's Appointments", value: overview?.todayAppointments ?? 0, icon: Calendar },
-              { label: 'Bed Occupancy', value: `${overview?.occupancyRate ?? 0}%`, icon: BedDouble },
-              { label: 'Active Alerts', value: overview?.activeAlerts ?? 0, icon: Activity },
+              { label: 'Total Patients',        value: overview?.totalPatients ?? 0,     icon: Users },
+              { label: "Today's Appointments",  value: overview?.todayAppointments ?? 0, icon: Calendar },
+              { label: 'Bed Occupancy',         value: `${overview?.occupancyRate ?? 0}%`, icon: BedDouble },
+              { label: 'Active Alerts',         value: overview?.activeAlerts ?? 0,      icon: Activity },
             ].map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
                 <Card className="p-4 text-center">
@@ -115,10 +114,10 @@ export function ReportsPage() {
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setActive(id)}
-            className={`text-left p-4 rounded-2xl border transition-all duration-200 ${
+            className={`text-left p-4 rounded-2xl border transition-all duration-200 bg-card ${
               active === id
-                ? 'border-primary/50 bg-primary/5 shadow-lg shadow-primary/10'
-                : 'border-border bg-card hover:border-border/70'
+                ? 'border-primary/50 shadow-lg shadow-primary/10'
+                : 'border-border hover:border-border/70'
             }`}
           >
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${bg}`}>
@@ -154,7 +153,7 @@ export function ReportsPage() {
                 ? <p className="text-sm text-muted-foreground text-center py-10">No patients found</p>
                 : patients.map((p, i) => (
                   <motion.div key={p.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }}
-                    className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3 items-center border-b border-border/40 last:border-0 hover:bg-secondary/20 transition-colors">
+                    className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3 items-center border-b border-border/40 last:border-0 hover:bg-muted/20 transition-colors">
                     <div>
                       <p className="text-sm font-medium">{p.firstName} {p.lastName}</p>
                       <p className="text-xs text-muted-foreground font-mono">{p.mrn}</p>
@@ -186,7 +185,7 @@ export function ReportsPage() {
                 ? <p className="text-sm text-muted-foreground text-center py-10">No appointments found</p>
                 : appointments.map((a, i) => (
                   <motion.div key={a.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.02 }}
-                    className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr] gap-4 px-5 py-3 items-center border-b border-border/40 last:border-0 hover:bg-secondary/20 transition-colors">
+                    className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr] gap-4 px-5 py-3 items-center border-b border-border/40 last:border-0 hover:bg-muted/20 transition-colors">
                     <div>
                       <p className="text-sm font-medium">{a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : '—'}</p>
                       <p className="text-xs text-muted-foreground font-mono">{a.patient?.mrn}</p>
@@ -214,17 +213,17 @@ export function ReportsPage() {
                 : (
                   <div className="space-y-3">
                     {[
-                      { label: 'Total Beds', value: overview?.totalBeds ?? 0, suffix: '' },
-                      { label: 'Occupied Beds', value: overview?.occupiedBeds ?? 0, suffix: '' },
-                      { label: 'Occupancy Rate', value: overview?.occupancyRate ?? 0, suffix: '%' },
-                      { label: 'Total Patients (Active)', value: overview?.totalPatients ?? 0, suffix: '' },
-                      { label: 'Admitted Patients', value: overview?.admittedPatients ?? 0, suffix: '' },
-                      { label: 'Critical Patients', value: overview?.criticalPatients ?? 0, suffix: '' },
-                      { label: "Today's Appointments", value: overview?.todayAppointments ?? 0, suffix: '' },
-                      { label: 'Total Doctors', value: overview?.totalDoctors ?? 0, suffix: '' },
+                      { label: 'Total Beds',               value: overview?.totalBeds         ?? 0, suffix: '' },
+                      { label: 'Occupied Beds',            value: overview?.occupiedBeds      ?? 0, suffix: '' },
+                      { label: 'Occupancy Rate',           value: overview?.occupancyRate     ?? 0, suffix: '%' },
+                      { label: 'Total Patients (Active)',  value: overview?.totalPatients     ?? 0, suffix: '' },
+                      { label: 'Admitted Patients',        value: overview?.admittedPatients  ?? 0, suffix: '' },
+                      { label: 'Critical Patients',        value: overview?.criticalPatients  ?? 0, suffix: '' },
+                      { label: "Today's Appointments",     value: overview?.todayAppointments ?? 0, suffix: '' },
+                      { label: 'Total Doctors',            value: overview?.totalDoctors      ?? 0, suffix: '' },
                     ].map((row, i) => (
                       <motion.div key={row.label} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
-                        className="flex items-center justify-between p-4 rounded-xl bg-secondary/30 hover:bg-secondary/50 transition-colors">
+                        className="flex items-center justify-between p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors border border-border/40">
                         <span className="text-sm font-medium">{row.label}</span>
                         <span className="text-2xl font-bold tabular-nums">{row.value}{row.suffix}</span>
                       </motion.div>

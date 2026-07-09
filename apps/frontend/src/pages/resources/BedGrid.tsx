@@ -8,9 +8,9 @@ import { useUIStore } from '@/store/ui.store';
 import type { Bed } from '@/types';
 
 const STATUS_STYLE: Record<string, { bg: string; border: string; dot: string; label: string }> = {
-  AVAILABLE:    { bg: 'bg-emerald-500/10',  border: 'border-emerald-500/30', dot: 'bg-emerald-400', label: 'Available' },
-  OCCUPIED:     { bg: 'bg-indigo-500/10',   border: 'border-indigo-500/30',  dot: 'bg-indigo-400',  label: 'Occupied' },
-  MAINTENANCE:  { bg: 'bg-amber-500/10',    border: 'border-amber-500/30',   dot: 'bg-amber-400',   label: 'Maintenance' },
+  AVAILABLE:   { bg: 'bg-emerald-500/10',  border: 'border-emerald-500/30', dot: 'bg-emerald-500',  label: 'Available' },
+  OCCUPIED:    { bg: 'bg-primary/10',      border: 'border-primary/30',     dot: 'bg-primary',      label: 'Occupied' },
+  MAINTENANCE: { bg: 'bg-amber-500/10',    border: 'border-amber-500/30',   dot: 'bg-amber-500',    label: 'Maintenance' },
 };
 
 interface Props { beds?: Bed[]; loading?: boolean; }
@@ -86,9 +86,9 @@ export function BedGrid({ beds, loading }: Props) {
                         className={`relative flex flex-col items-center justify-center p-2 rounded-xl border text-center transition-all duration-150 ${style.bg} ${style.border} ${isOccupied ? 'cursor-default' : 'cursor-pointer hover:opacity-80'}`}
                       >
                         {bed.status === 'MAINTENANCE' && (
-                          <Wrench className="w-3 h-3 text-amber-400 absolute top-1 right-1" />
+                          <Wrench className="w-3 h-3 text-amber-500 absolute top-1 right-1" />
                         )}
-                        <p className="text-[10px] font-bold leading-tight">{bed.number}</p>
+                        <p className="text-[10px] font-bold leading-tight text-foreground">{bed.number}</p>
                         <p className="text-[9px] text-muted-foreground leading-tight">{bed.type.slice(0, 3)}</p>
                       </motion.div>
                     );

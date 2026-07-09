@@ -10,9 +10,9 @@ import { getInitials } from '@/lib/utils';
 import type { Staff } from '@/types';
 
 const SHIFT_COLOR: Record<string, string> = {
-  MORNING: 'text-amber-400',
-  AFTERNOON: 'text-cyan-400',
-  NIGHT: 'text-indigo-400',
+  MORNING:   'text-amber-500',
+  AFTERNOON: 'text-cyan-500',
+  NIGHT:     'text-primary',
 };
 
 interface Props { staff?: Staff[]; loading?: boolean; }
@@ -36,11 +36,7 @@ export function StaffRoster({ staff, loading }: Props) {
       </CardHeader>
       <CardContent className="p-0">
         <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-2.5 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-          <span>Staff</span>
-          <span>Role</span>
-          <span>Department</span>
-          <span>Shift</span>
-          <span>Available</span>
+          <span>Staff</span><span>Role</span><span>Department</span><span>Shift</span><span>Available</span>
         </div>
         {loading ? (
           <div className="divide-y divide-border">
@@ -63,7 +59,7 @@ export function StaffRoster({ staff, loading }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.04 }}
-                className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 items-center hover:bg-secondary/30 transition-colors"
+                className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 items-center hover:bg-muted/30 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <Avatar className="w-8 h-8 flex-shrink-0">
@@ -76,7 +72,7 @@ export function StaffRoster({ staff, loading }: Props) {
                 </div>
                 <Badge variant="outline" className="text-[10px] w-fit capitalize">{s.user.role.toLowerCase()}</Badge>
                 <span className="text-sm text-muted-foreground truncate">{s.department?.name ?? '—'}</span>
-                <span className={`text-xs font-medium ${SHIFT_COLOR[s.shift] ?? ''}`}>{s.shift}</span>
+                <span className={`text-xs font-medium ${SHIFT_COLOR[s.shift] ?? 'text-muted-foreground'}`}>{s.shift}</span>
                 <Button
                   size="sm"
                   variant={s.available ? 'outline' : 'secondary'}

@@ -73,6 +73,25 @@ function applyTheme(mode: ThemeMode, accent: AccentColor) {
     root.style.setProperty(key, val);
   }
 
+  // Glass surface variables
+  if (mode === 'dark') {
+    root.style.setProperty('--glass-bg', 'rgba(255,255,255,0.03)');
+    root.style.setProperty('--glass-border', 'rgba(255,255,255,0.08)');
+    root.style.setProperty('--glass-hover-bg', 'rgba(255,255,255,0.05)');
+    root.style.setProperty('--glass-hover-border', 'rgba(255,255,255,0.12)');
+    root.style.setProperty('--chart-grid', 'hsl(222 47% 13%)');
+    root.style.setProperty('--chart-text', 'hsl(215 16% 47%)');
+    root.style.setProperty('--shimmer-highlight', 'rgba(255,255,255,0.04)');
+  } else {
+    root.style.setProperty('--glass-bg', 'rgba(255,255,255,0.7)');
+    root.style.setProperty('--glass-border', 'rgba(0,0,0,0.08)');
+    root.style.setProperty('--glass-hover-bg', 'rgba(255,255,255,0.85)');
+    root.style.setProperty('--glass-hover-border', 'rgba(0,0,0,0.14)');
+    root.style.setProperty('--chart-grid', 'hsl(220 13% 88%)');
+    root.style.setProperty('--chart-text', 'hsl(215 16% 46%)');
+    root.style.setProperty('--shimmer-highlight', 'rgba(0,0,0,0.04)');
+  }
+
   // Apply accent variables
   root.style.setProperty('--primary', accentDef.primary);
   root.style.setProperty('--primary-foreground', accentDef.primaryFg);

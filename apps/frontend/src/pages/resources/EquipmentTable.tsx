@@ -7,8 +7,8 @@ import { formatDate } from '@/lib/utils';
 import type { Equipment } from '@/types';
 
 const STATUS_CONFIG: Record<string, { variant: 'success' | 'warning' | 'secondary'; icon: React.ReactNode }> = {
-  OPERATIONAL: { variant: 'success', icon: <CheckCircle2 className="w-3 h-3" /> },
-  MAINTENANCE: { variant: 'warning', icon: <Wrench className="w-3 h-3" /> },
+  OPERATIONAL: { variant: 'success',   icon: <CheckCircle2 className="w-3 h-3" /> },
+  MAINTENANCE: { variant: 'warning',   icon: <Wrench className="w-3 h-3" /> },
   RETIRED:     { variant: 'secondary', icon: <XCircle className="w-3 h-3" /> },
 };
 
@@ -22,11 +22,7 @@ export function EquipmentTable({ equipment, loading }: Props) {
       </CardHeader>
       <CardContent className="p-0">
         <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-2.5 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-          <span>Name</span>
-          <span>Category</span>
-          <span>Department</span>
-          <span>Status</span>
-          <span>Next Service</span>
+          <span>Name</span><span>Category</span><span>Department</span><span>Status</span><span>Next Service</span>
         </div>
         {loading ? (
           <div className="divide-y divide-border">
@@ -46,7 +42,7 @@ export function EquipmentTable({ equipment, loading }: Props) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.03 }}
-                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3 items-center hover:bg-secondary/30 transition-colors"
+                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3 items-center hover:bg-muted/30 transition-colors"
                 >
                   <div>
                     <p className="text-sm font-medium">{eq.name}</p>

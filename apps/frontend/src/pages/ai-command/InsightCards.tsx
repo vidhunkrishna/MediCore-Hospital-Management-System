@@ -21,8 +21,8 @@ const PRIORITY_VARIANT: Record<string, 'destructive' | 'warning' | 'default' | '
 };
 
 const PRIORITY_BORDER: Record<string, string> = {
-  CRITICAL: 'border-red-500/30 hover:border-red-500/50',
-  HIGH:     'border-indigo-500/30 hover:border-indigo-500/50',
+  CRITICAL: 'border-destructive/30 hover:border-destructive/50',
+  HIGH:     'border-primary/30 hover:border-primary/50',
   MEDIUM:   'border-amber-500/30 hover:border-amber-500/50',
   LOW:      'border-border hover:border-border/70',
 };
@@ -44,10 +44,10 @@ export function InsightCards({ insights, loading }: Props) {
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.08, duration: 0.3 }}
-              className={`p-4 rounded-xl border bg-secondary/20 transition-all duration-200 group cursor-default ${PRIORITY_BORDER[insight.priority] ?? 'border-border'}`}
+              className={`p-4 rounded-xl border bg-muted/20 transition-all duration-200 group cursor-default ${PRIORITY_BORDER[insight.priority] ?? 'border-border'}`}
             >
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0 text-muted-foreground group-hover:text-foreground transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 text-muted-foreground group-hover:text-foreground transition-colors">
                   {TYPE_ICON[insight.type] ?? <AlertOctagon className="w-4 h-4" />}
                 </div>
                 <div className="flex-1 min-w-0">

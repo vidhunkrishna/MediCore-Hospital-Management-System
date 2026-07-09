@@ -19,7 +19,7 @@ import { getInitials } from '@/lib/utils';
 import type { User as UserType } from '@/types';
 
 const profileSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  name:  z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email'),
 });
 type ProfileValues = z.infer<typeof profileSchema>;
@@ -34,11 +34,11 @@ const TABS = [
 type Tab = (typeof TABS)[number]['id'];
 
 const HOSPITAL_INFO = {
-  name: 'MediCore General Hospital',
-  address: '123 Healthcare Blvd, Medical City, MC 10001',
-  phone: '+1 (555) 000-0100',
-  license: 'LIC-2024-MCG-001',
-  beds: 60,
+  name:        'MediCore General Hospital',
+  address:     '123 Healthcare Blvd, Medical City, MC 10001',
+  phone:       '+1 (555) 000-0100',
+  license:     'LIC-2024-MCG-001',
+  beds:        60,
   departments: 5,
 };
 
@@ -83,7 +83,7 @@ export function SettingsPage() {
               className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-left ${
                 tab === id
                   ? 'gradient-primary text-white shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
               }`}
             >
               <Icon className="w-4 h-4 flex-shrink-0" />
@@ -101,7 +101,6 @@ export function SettingsPage() {
                 <CardTitle className="text-base">Profile Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Avatar */}
                 <div className="flex items-center gap-4">
                   <Avatar className="w-16 h-16">
                     <AvatarFallback className="text-lg">{getInitials(user?.name ?? 'U')}</AvatarFallback>
@@ -111,20 +110,18 @@ export function SettingsPage() {
                     <Badge variant="secondary" className="mt-1 capitalize text-xs">{user?.role?.toLowerCase()}</Badge>
                   </div>
                 </div>
-
                 <Separator />
-
                 <form onSubmit={handleSubmit(onSaveProfile)} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label htmlFor="s-name">Full Name</Label>
-                      <Input id="s-name" {...register('name')} className={errors.name ? 'border-red-500/50' : ''} />
-                      {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
+                      <Input id="s-name" {...register('name')} className={errors.name ? 'border-destructive/50' : ''} />
+                      {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="s-email">Email</Label>
-                      <Input id="s-email" type="email" {...register('email')} className={errors.email ? 'border-red-500/50' : ''} />
-                      {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
+                      <Input id="s-email" type="email" {...register('email')} className={errors.email ? 'border-destructive/50' : ''} />
+                      {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
                     </div>
                   </div>
                   <div className="space-y-1.5">
@@ -146,14 +143,14 @@ export function SettingsPage() {
           {tab === 'hospital' && (
             <Card>
               <CardHeader className="pb-4"><CardTitle className="text-base">Hospital Information</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-1">
                 {Object.entries(HOSPITAL_INFO).map(([key, val]) => (
-                  <div key={key} className="flex items-center justify-between py-2.5 border-b border-border/40 last:border-0">
+                  <div key={key} className="flex items-center justify-between py-3 border-b border-border/40 last:border-0">
                     <span className="text-sm text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
                     <span className="text-sm font-medium">{String(val)}</span>
                   </div>
                 ))}
-                <p className="text-xs text-muted-foreground pt-2">Hospital configuration is managed by system administrators.</p>
+                <p className="text-xs text-muted-foreground pt-3">Hospital configuration is managed by system administrators.</p>
               </CardContent>
             </Card>
           )}
@@ -161,9 +158,9 @@ export function SettingsPage() {
           {tab === 'notifications' && (
             <Card>
               <CardHeader className="pb-4"><CardTitle className="text-base">Notification Preferences</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-1">
                 {(Object.keys(notifs) as (keyof typeof notifs)[]).map((k) => (
-                  <div key={k} className="flex items-center justify-between py-2 border-b border-border/40 last:border-0">
+                  <div key={k} className="flex items-center justify-between py-3 border-b border-border/40 last:border-0">
                     <div>
                       <p className="text-sm font-medium capitalize">{k} notifications</p>
                       <p className="text-xs text-muted-foreground">Receive alerts for {k} events</p>
@@ -172,7 +169,7 @@ export function SettingsPage() {
                       role="switch"
                       aria-checked={notifs[k]}
                       onClick={() => toggleNotif(k)}
-                      className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring ${notifs[k] ? 'bg-primary' : 'bg-secondary'}`}
+                      className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-ring ${notifs[k] ? 'bg-primary' : 'bg-muted'}`}
                     >
                       <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${notifs[k] ? 'translate-x-5' : 'translate-x-0'}`} />
                     </button>
@@ -199,7 +196,11 @@ export function SettingsPage() {
                         <button
                           key={t}
                           onClick={() => setMode(val)}
-                          className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-all ${isActive ? 'gradient-primary text-white border-transparent' : 'border-border text-muted-foreground hover:text-foreground'}`}
+                          className={`px-4 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                            isActive
+                              ? 'gradient-primary text-white border-transparent'
+                              : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                          }`}
                         >
                           {t}
                         </button>
@@ -235,16 +236,18 @@ export function SettingsPage() {
               <CardHeader className="pb-4"><CardTitle className="text-base">Security</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                  <p className="text-sm font-semibold text-emerald-400">Session Active</p>
-                  <p className="text-xs text-muted-foreground mt-1">You are currently logged in as <span className="text-foreground font-medium">{user?.email}</span></p>
+                  <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Session Active</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    You are currently logged in as <span className="text-foreground font-medium">{user?.email}</span>
+                  </p>
                 </div>
                 <Separator />
-                <div className="space-y-3">
+                <div className="space-y-1">
                   <p className="text-sm font-semibold">Password</p>
                   <p className="text-xs text-muted-foreground">Password changes require re-authentication. Contact your administrator to reset your password.</p>
                 </div>
                 <Separator />
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <p className="text-sm font-semibold">JWT Session</p>
                   <p className="text-xs text-muted-foreground">Your session token expires in 7 days. You will be automatically redirected to login on expiry.</p>
                 </div>

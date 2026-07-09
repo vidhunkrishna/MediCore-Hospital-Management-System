@@ -3,9 +3,9 @@ import { CheckCircle2, XCircle, Info, X } from 'lucide-react';
 import { useUIStore } from '@/store/ui.store';
 
 const VARIANT_STYLE = {
-  default:     { icon: <Info className="w-4 h-4 text-indigo-400" />,    border: 'border-indigo-500/30', bg: 'bg-indigo-500/10' },
-  success:     { icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />, border: 'border-emerald-500/30', bg: 'bg-emerald-500/10' },
-  destructive: { icon: <XCircle className="w-4 h-4 text-red-400" />,    border: 'border-red-500/30',    bg: 'bg-red-500/10' },
+  default:     { icon: <Info className="w-4 h-4 text-primary" />,          border: 'border-primary/30',    bg: 'bg-primary/10' },
+  success:     { icon: <CheckCircle2 className="w-4 h-4 text-emerald-500" />, border: 'border-emerald-500/30', bg: 'bg-emerald-500/10' },
+  destructive: { icon: <XCircle className="w-4 h-4 text-destructive" />,   border: 'border-destructive/30', bg: 'bg-destructive/10' },
 } as const;
 
 export function ToastContainer() {
@@ -28,11 +28,11 @@ export function ToastContainer() {
               exit={{ opacity: 0, x: 40, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 320, damping: 28 }}
               role="alert"
-              className={`pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl border shadow-2xl glass ${style.border} ${style.bg}`}
+              className={`pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl border shadow-2xl bg-card text-card-foreground ${style.border} ${style.bg}`}
             >
               <span className="flex-shrink-0 mt-0.5">{style.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground">{t.title}</p>
+                <p className="text-sm font-semibold">{t.title}</p>
                 {t.description && <p className="text-xs text-muted-foreground mt-0.5">{t.description}</p>}
               </div>
               <button

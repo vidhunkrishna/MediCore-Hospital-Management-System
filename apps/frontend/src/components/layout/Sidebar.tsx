@@ -2,7 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Users, Calendar, Package, BarChart3,
-  Brain, FileText, Settings, ChevronLeft, Activity, LogOut
+  Brain, FileText, Settings, ChevronLeft, Activity, LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth.store';
@@ -11,18 +11,18 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/utils';
 
 const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/patients', icon: Users, label: 'Patients' },
-  { to: '/appointments', icon: Calendar, label: 'Appointments' },
-  { to: '/resources', icon: Package, label: 'Resources' },
-  { to: '/analytics', icon: BarChart3, label: 'Analytics' },
-  { to: '/ai-command', icon: Brain, label: 'AI Command' },
-  { to: '/reports', icon: FileText, label: 'Reports' },
-  { to: '/settings', icon: Settings, label: 'Settings' },
+  { to: '/dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/patients',    icon: Users,            label: 'Patients' },
+  { to: '/appointments',icon: Calendar,         label: 'Appointments' },
+  { to: '/resources',   icon: Package,          label: 'Resources' },
+  { to: '/analytics',   icon: BarChart3,        label: 'Analytics' },
+  { to: '/ai-command',  icon: Brain,            label: 'AI Command' },
+  { to: '/reports',     icon: FileText,         label: 'Reports' },
+  { to: '/settings',    icon: Settings,         label: 'Settings' },
 ];
 
 export function Sidebar() {
-  const location = useLocation();
+  const location  = useLocation();
   const { user, logout } = useAuthStore();
   const { sidebarOpen, toggleSidebar } = useUIStore();
 
@@ -30,12 +30,12 @@ export function Sidebar() {
     <motion.aside
       animate={{ width: sidebarOpen ? 256 : 72 }}
       transition={{ duration: 0.25, ease: 'easeInOut' }}
-      className="fixed left-0 top-0 h-full z-40 flex flex-col border-r border-border bg-sidebar-background overflow-hidden"
+      className="fixed left-0 top-0 h-full z-40 flex flex-col border-r border-sidebar-border bg-sidebar-background overflow-hidden"
     >
       {/* Logo */}
-      <div className="flex items-center h-16 px-4 border-b border-border shrink-0">
+      <div className="flex items-center h-16 px-4 border-b border-sidebar-border shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex-shrink-0 w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
+          <div className="flex-shrink-0 w-8 h-8 rounded-lg gradient-primary flex items-center justify-center shadow-sm">
             <Activity className="w-4 h-4 text-white" />
           </div>
           <AnimatePresence>
@@ -60,7 +60,7 @@ export function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={toggleSidebar}
-              className="ml-auto flex-shrink-0 p-1 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+              className="ml-auto flex-shrink-0 p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </motion.button>
@@ -69,7 +69,7 @@ export function Sidebar() {
         {!sidebarOpen && (
           <button
             onClick={toggleSidebar}
-            className="mx-auto p-1 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+            className="mx-auto p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
           >
             <Activity className="w-4 h-4" />
           </button>
@@ -87,8 +87,8 @@ export function Sidebar() {
                 className={cn(
                   'relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-150',
                   isActive
-                    ? 'text-primary-foreground'
-                    : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-secondary'
+                    ? 'text-white'
+                    : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-muted/60'
                 )}
               >
                 {isActive && (
@@ -118,7 +118,7 @@ export function Sidebar() {
       </nav>
 
       {/* User */}
-      <div className="border-t border-border p-3 shrink-0">
+      <div className="border-t border-sidebar-border p-3 shrink-0">
         <div className="flex items-center gap-3">
           <Avatar className="flex-shrink-0">
             <AvatarFallback>{getInitials(user?.name ?? 'U')}</AvatarFallback>
@@ -139,7 +139,7 @@ export function Sidebar() {
           {sidebarOpen && (
             <button
               onClick={logout}
-              className="flex-shrink-0 p-1.5 rounded-lg hover:bg-destructive/20 text-muted-foreground hover:text-red-400 transition-colors"
+              className="flex-shrink-0 p-1.5 rounded-lg hover:bg-destructive/15 text-muted-foreground hover:text-destructive transition-colors"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />

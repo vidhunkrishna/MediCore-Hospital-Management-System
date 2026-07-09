@@ -13,10 +13,10 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 const PRIORITY_STYLE: Record<string, { badge: 'destructive' | 'default' | 'warning' | 'secondary'; bar: string }> = {
-  CRITICAL: { badge: 'destructive', bar: 'bg-red-500' },
-  HIGH:     { badge: 'default',     bar: 'bg-indigo-500' },
+  CRITICAL: { badge: 'destructive', bar: 'bg-destructive' },
+  HIGH:     { badge: 'default',     bar: 'bg-primary' },
   MEDIUM:   { badge: 'warning',     bar: 'bg-amber-500' },
-  LOW:      { badge: 'secondary',   bar: 'bg-slate-500' },
+  LOW:      { badge: 'secondary',   bar: 'bg-muted-foreground' },
 };
 
 interface Props { recommendations?: AIRecommendation[]; loading?: boolean; }
@@ -38,10 +38,10 @@ export function ResourceRecommendations({ recommendations, loading }: Props) {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07, duration: 0.3 }}
-                  className="flex gap-3 p-4 rounded-xl bg-secondary/30 border border-border hover:border-border/70 transition-all group"
+                  className="flex gap-3 p-4 rounded-xl bg-muted/30 border border-border hover:border-border/70 transition-all group"
                 >
                   <div className={`w-1 rounded-full flex-shrink-0 ${style.bar}`} />
-                  <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0 text-muted-foreground">
+                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 text-muted-foreground">
                     {ICON_MAP[rec.icon] ?? <Activity className="w-4 h-4" />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -51,8 +51,8 @@ export function ResourceRecommendations({ recommendations, loading }: Props) {
                     </div>
                     <p className="text-sm text-foreground leading-snug">{rec.message}</p>
                     <div className="flex items-center gap-1 mt-2">
-                      <ArrowRight className="w-3 h-3 text-emerald-400 flex-shrink-0" />
-                      <span className="text-xs text-emerald-400 font-medium">{rec.impact}</span>
+                      <ArrowRight className="w-3 h-3 text-emerald-600 flex-shrink-0 dark:text-emerald-400" />
+                      <span className="text-xs text-emerald-600 font-medium dark:text-emerald-400">{rec.impact}</span>
                     </div>
                   </div>
                 </motion.div>
