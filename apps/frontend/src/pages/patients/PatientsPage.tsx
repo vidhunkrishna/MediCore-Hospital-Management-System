@@ -5,10 +5,11 @@ import { usePatients } from '@/hooks/usePatients';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { PatientStatusBadge } from '@/components/shared/StatusBadge';
+import { EmptyState } from '@/components/shared/EmptyState';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 import { PatientModal } from './PatientModal';
 import { PatientDetailDrawer } from './PatientDetailDrawer';
 import { getInitials, getAge, formatDate } from '@/lib/utils';
@@ -46,15 +47,19 @@ export function PatientsPage() {
   return (
     <div className="space-y-5 max-w-[1400px]">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between gap-4"
+      >
         <div>
-          <h2 className="text-xl font-semibold">Patients</h2>
-          <p className="text-sm text-muted-foreground">{total} total records</p>
+          <h2 className="text-lg font-bold tracking-tight">Patients</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">{total} total records</p>
         </div>
-        <Button onClick={openAdd} className="gap-2 flex-shrink-0">
+        <Button onClick={openAdd} className="gap-2 flex-shrink-0 h-9 text-sm">
           <Plus className="w-4 h-4" /> New Patient
         </Button>
-      </div>
+      </motion.div>
 
       {/* Search + Filters */}
       <Card>
@@ -91,7 +96,7 @@ export function PatientsPage() {
       <Card>
         <CardContent className="p-0">
           {/* Table header */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-muted/30 border-y border-border text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
             <span>Patient</span>
             <span>MRN</span>
             <span>Age / Gender</span>
@@ -101,45 +106,14 @@ export function PatientsPage() {
           </div>
 
           {isLoading ? (
-            <div className="divide-y divide-border">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-5 py-4 items-center">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="w-9 h-9 rounded-full flex-shrink-0" />
-                    <div className="space-y-1.5">
-                      <Skeleton className="h-3.5 w-32" />
-                      <Skeleton className="h-2.5 w-20" />
-                    </div>
-                  </div>
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-3 w-16" />
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-5 w-16 rounded-full" />
-                  <Skeleton className="h-7 w-16 rounded-lg" />
-                </div>
-              ))}
-            </div>
+            <TableSkeleton rows={8} cols={6} gridTemplateColumns="2fr 1fr 1fr 1fr 1fr auto" />
           ) : patients.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center gap-3 py-16 text-center"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-secondary/60 flex items-center justify-center">
-                <Users className="w-7 h-7 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="font-medium">No patients found</p>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  {search || statusFilter ? 'Try adjusting your search or filters' : 'Register the first patient to get started'}
-                </p>
-              </div>
-              {!search && !statusFilter && (
-                <Button onClick={openAdd} variant="outline" size="sm" className="mt-1 gap-1.5">
-                  <Plus className="w-3.5 h-3.5" /> Add Patient
-                </Button>
-              )}
-            </motion.div>
+            <EmptyState
+              icon={Users}
+              title="No patients found"
+              description={search || statusFilter ? 'Try adjusting your search or filters' : 'Register the first patient to get started'}
+              action={!search && !statusFilter ? { label: 'Register Patient', onClick: openAdd, icon: Plus } : undefined}
+            />
           ) : (
             <div className="divide-y divide-border">
               {patients.map((p, i) => (
@@ -148,7 +122,7 @@ export function PatientsPage() {
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.03 }}
-                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center hover:bg-secondary/30 transition-colors cursor-pointer group"
+                  className={`grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center border-b border-border/40 last:border-0 transition-colors ${i % 2 !== 0 ? 'bg-muted/[0.015]' : ''} hover:bg-muted/30 cursor-pointer group`}
                   onClick={() => setDetailId(p.id)}
                 >
                   <div className="flex items-center gap-3 min-w-0">

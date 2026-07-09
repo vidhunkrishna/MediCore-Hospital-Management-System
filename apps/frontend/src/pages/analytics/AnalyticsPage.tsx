@@ -44,16 +44,16 @@ export function AnalyticsPage() {
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex items-center justify-between gap-4"
       >
         <div>
-          <h2 className="text-xl font-semibold">Analytics</h2>
-          <p className="text-sm text-muted-foreground">Hospital performance insights and trends</p>
+          <h2 className="text-lg font-bold tracking-tight">Analytics</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Hospital performance insights and trends</p>
         </div>
         <Button
           variant="outline"
           size="sm"
-          className="gap-2"
+          className="gap-2 h-9 text-sm"
           disabled={!occupancy?.length}
           onClick={() => occupancy && exportCSV(occupancy)}
         >

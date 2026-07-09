@@ -140,6 +140,7 @@ export interface AIHealthScore {
   staffUtilization: number;
   criticalPatients: number;
   unresolvedAlerts: number;
+  engine?: string;
 }
 
 export interface AIInsight {

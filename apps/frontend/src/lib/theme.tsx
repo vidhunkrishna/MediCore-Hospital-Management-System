@@ -15,31 +15,31 @@ interface AccentDef {
 export const ACCENT_MAP: Record<AccentColor, AccentDef> = {
   indigo:  { label: 'Indigo',  hex: '#6366f1', primary: '239 84% 67%', primaryFg: '0 0% 100%', accent: '189 94% 43%' },
   cyan:    { label: 'Cyan',    hex: '#06b6d4', primary: '189 94% 43%', primaryFg: '0 0% 100%', accent: '239 84% 67%' },
-  emerald: { label: 'Emerald', hex: '#10b981', primary: '160 84% 39%', primaryFg: '0 0% 100%', accent: '189 94% 43%' },
+  emerald: { label: 'Emerald', hex: '#10b981', primary: '160 84% 39%', primaryFg: '0 0% 100%', accent: '186 94% 41%' },
   amber:   { label: 'Amber',   hex: '#f59e0b', primary: '38 92% 50%',  primaryFg: '0 0% 0%',   accent: '30 100% 55%' },
   red:     { label: 'Red',     hex: '#ef4444', primary: '0 84% 60%',   primaryFg: '0 0% 100%', accent: '0 72% 51%'   },
   violet:  { label: 'Violet',  hex: '#8b5cf6', primary: '263 70% 64%', primaryFg: '0 0% 100%', accent: '239 84% 67%' },
 };
 
 const DARK_BASE = {
-  '--background':           '222 47% 5%',
-  '--foreground':           '213 31% 91%',
-  '--card':                 '222 47% 7%',
-  '--card-foreground':      '213 31% 91%',
-  '--popover':              '222 47% 7%',
-  '--popover-foreground':   '213 31% 91%',
-  '--secondary':            '222 47% 11%',
-  '--secondary-foreground': '213 31% 91%',
-  '--muted':                '222 47% 11%',
-  '--muted-foreground':     '215 16% 47%',
-  '--destructive':          '0 63% 31%',
+  '--background':           '220 20% 4%',
+  '--foreground':           '210 20% 93%',
+  '--card':                 '220 20% 6%',
+  '--card-foreground':      '210 20% 93%',
+  '--popover':              '220 20% 6%',
+  '--popover-foreground':   '210 20% 93%',
+  '--secondary':            '220 20% 10%',
+  '--secondary-foreground': '210 20% 93%',
+  '--muted':                '220 20% 10%',
+  '--muted-foreground':     '215 14% 50%',
+  '--destructive':          '0 62% 40%',
   '--destructive-foreground':'0 0% 100%',
-  '--border':               '222 47% 13%',
-  '--input':                '222 47% 13%',
-  '--radius':               '0.75rem',
-  '--sidebar-background':   '222 47% 6%',
-  '--sidebar-foreground':   '213 31% 91%',
-  '--sidebar-border':       '222 47% 11%',
+  '--border':               '220 20% 12%',
+  '--input':                '220 20% 12%',
+  '--radius':               '0.875rem',
+  '--sidebar-background':   '220 20% 5%',
+  '--sidebar-foreground':   '210 20% 93%',
+  '--sidebar-border':       '220 20% 10%',
 };
 
 const LIGHT_BASE = {
@@ -135,7 +135,7 @@ function readMode(): ThemeMode {
 
 function readAccent(): AccentColor {
   const v = localStorage.getItem(STORAGE_ACCENT);
-  return (v && v in ACCENT_MAP) ? (v as AccentColor) : 'indigo';
+  return (v && v in ACCENT_MAP) ? (v as AccentColor) : 'emerald';
 }
 
 // Immediately apply stored theme before React renders (prevents flash)

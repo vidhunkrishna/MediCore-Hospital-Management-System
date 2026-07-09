@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 import { useUpdateStaffAvailability } from '@/hooks/useResources';
 import { useUIStore } from '@/store/ui.store';
 import { getInitials } from '@/lib/utils';
@@ -35,22 +35,11 @@ export function StaffRoster({ staff, loading }: Props) {
         <CardTitle className="text-sm font-semibold">Staff Roster ({staff?.length ?? 0})</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-2.5 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-muted/30 border-y border-border text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
           <span>Staff</span><span>Role</span><span>Department</span><span>Shift</span><span>Available</span>
         </div>
         {loading ? (
-          <div className="divide-y divide-border">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="w-8 h-8 rounded-full" />
-                  <Skeleton className="h-3.5 w-28" />
-                </div>
-                {Array.from({ length: 3 }).map((__, j) => <Skeleton key={j} className="h-3 w-16" />)}
-                <Skeleton className="h-7 w-20 rounded-lg" />
-              </div>
-            ))}
-          </div>
+          <TableSkeleton rows={5} cols={5} gridTemplateColumns="2fr 1fr 1fr 1fr auto" />
         ) : (
           <div className="divide-y divide-border">
             {staff?.map((s, i) => (
@@ -59,7 +48,7 @@ export function StaffRoster({ staff, loading }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.04 }}
-                className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 items-center hover:bg-muted/30 transition-colors"
+                className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center hover:bg-muted/30 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <Avatar className="w-8 h-8 flex-shrink-0">

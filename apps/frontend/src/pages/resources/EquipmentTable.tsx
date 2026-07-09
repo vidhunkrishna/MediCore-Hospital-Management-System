@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Wrench, CheckCircle2, XCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 import { formatDate } from '@/lib/utils';
 import type { Equipment } from '@/types';
 
@@ -21,17 +21,11 @@ export function EquipmentTable({ equipment, loading }: Props) {
         <CardTitle className="text-sm font-semibold">Equipment ({equipment?.length ?? 0})</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-2.5 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+        <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3 bg-muted/30 border-y border-border text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
           <span>Name</span><span>Category</span><span>Department</span><span>Status</span><span>Next Service</span>
         </div>
         {loading ? (
-          <div className="divide-y divide-border">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-5 py-3.5 items-center">
-                {Array.from({ length: 5 }).map((__, j) => <Skeleton key={j} className="h-3.5 w-full" />)}
-              </div>
-            ))}
-          </div>
+          <TableSkeleton rows={6} cols={5} gridTemplateColumns="2fr 1fr 1fr 1fr 1fr" />
         ) : (
           <div className="divide-y divide-border">
             {equipment?.map((eq, i) => {

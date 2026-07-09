@@ -5,9 +5,10 @@ import { useAppointments, useUpdateAppointmentStatus } from '@/hooks/useAppointm
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { AppointmentStatusBadge } from '@/components/shared/StatusBadge';
+import { EmptyState } from '@/components/shared/EmptyState';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 import { AppointmentModal } from './AppointmentModal';
 import { formatDateTime } from '@/lib/utils';
 import type { Appointment, AppointmentStatus } from '@/types';
@@ -66,15 +67,19 @@ export function AppointmentsPage() {
 
   return (
     <div className="space-y-5 max-w-[1400px]">
-      <div className="flex items-center justify-between gap-4">
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between gap-4"
+      >
         <div>
-          <h2 className="text-xl font-semibold">Appointments</h2>
-          <p className="text-sm text-muted-foreground">{total} total appointments</p>
+          <h2 className="text-lg font-bold tracking-tight">Appointments</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">{total} total appointments</p>
         </div>
-        <Button onClick={openAdd} className="gap-2 flex-shrink-0">
+        <Button onClick={openAdd} className="gap-2 flex-shrink-0 h-9 text-sm">
           <Plus className="w-4 h-4" /> Schedule
         </Button>
-      </div>
+      </motion.div>
 
       {/* Filters */}
       <Card>
@@ -105,7 +110,7 @@ export function AppointmentsPage() {
       {/* Table */}
       <Card>
         <CardContent className="p-0">
-          <div className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr_auto] gap-4 px-5 py-3 border-b border-border text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+          <div className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-muted/30 border-y border-border text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
             <span>Patient</span>
             <span>Doctor</span>
             <span>Date & Time</span>
@@ -115,27 +120,14 @@ export function AppointmentsPage() {
           </div>
 
           {isLoading ? (
-            <div className="divide-y divide-border">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr_auto] gap-4 px-5 py-4 items-center">
-                  {Array.from({ length: 5 }).map((__, j) => <Skeleton key={j} className="h-3.5 w-full" />)}
-                  <Skeleton className="h-7 w-20 rounded-lg" />
-                </div>
-              ))}
-            </div>
+            <TableSkeleton rows={8} cols={6} gridTemplateColumns="2fr 1.5fr 1.5fr 1fr 1fr auto" />
           ) : appointments.length === 0 ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-3 py-16 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-secondary/60 flex items-center justify-center">
-                <Calendar className="w-7 h-7 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="font-medium">No appointments found</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Schedule the first appointment to get started</p>
-              </div>
-              <Button onClick={openAdd} variant="outline" size="sm" className="mt-1 gap-1.5">
-                <Plus className="w-3.5 h-3.5" /> Schedule
-              </Button>
-            </motion.div>
+            <EmptyState
+              icon={Calendar}
+              title="No appointments found"
+              description="Schedule the first appointment to get started"
+              action={{ label: 'Schedule Appointment', onClick: openAdd, icon: Plus }}
+            />
           ) : (
             <div className="divide-y divide-border">
               {appointments.map((a, i) => (
@@ -144,7 +136,7 @@ export function AppointmentsPage() {
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.03 }}
-                  className="grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center hover:bg-secondary/30 transition-colors group cursor-pointer"
+                  className={`grid grid-cols-[2fr_1.5fr_1.5fr_1fr_1fr_auto] gap-4 px-5 py-3.5 items-center border-b border-border/40 last:border-0 transition-colors ${i % 2 !== 0 ? 'bg-muted/[0.015]' : ''} hover:bg-muted/30 group cursor-pointer`}
                   onClick={() => openEdit(a)}
                 >
                   <div className="min-w-0">

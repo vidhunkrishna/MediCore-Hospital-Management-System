@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import type { AIHealthScore, AIInsight, AIRecommendation } from '@/types';
 
@@ -50,6 +50,15 @@ export function useRecommendations() {
       return res.data.data;
     },
     staleTime: 60_000,
+  });
+}
+
+export function useAIChat() {
+  return useMutation({
+    mutationFn: async (message: string) => {
+      const res = await api.post<{ success: boolean; data: { message: string } }>('/ai/chat', { message });
+      return res.data.data;
+    },
   });
 }
 

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { BedDouble, Wrench, Users } from 'lucide-react';
 import { useBeds, useEquipment, useStaff } from '@/hooks/useResources';
 import { BedGrid } from './BedGrid';
@@ -15,7 +15,13 @@ const TABS = [
 type Tab = (typeof TABS)[number]['id'];
 
 export function ResourcesPage() {
-  const [tab, setTab] = useState<Tab>('beds');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab') as Tab;
+  const tab = TABS.some((t) => t.id === tabParam) ? tabParam : 'beds';
+
+  const setTab = (newTab: Tab) => {
+    setSearchParams({ tab: newTab });
+  };
 
   const { data: beds,      isLoading: bedsLoading  } = useBeds();
   const { data: equipment, isLoading: equipLoading } = useEquipment();
@@ -27,10 +33,17 @@ export function ResourcesPage() {
 
   return (
     <div className="space-y-5 max-w-[1400px]">
-      <div>
-        <h2 className="text-xl font-semibold">Resources</h2>
-        <p className="text-sm text-muted-foreground">Beds, equipment and staff management</p>
-      </div>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between gap-4"
+      >
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Resources</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Beds, equipment and staff management</p>
+        </div>
+      </motion.div>
 
       {/* Summary stats */}
       <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">

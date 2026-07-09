@@ -4,79 +4,148 @@
 
 @layer base {
   :root {
-    --background: 222 47% 5%;
-    --foreground: 213 31% 91%;
-    --card: 222 47% 7%;
-    --card-foreground: 213 31% 91%;
-    --popover: 222 47% 7%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 213 31% 91%;
-    --muted: 222 47% 11%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 189 94% 43%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 222 47% 13%;
-    --input: 222 47% 13%;
-    --ring: 239 84% 67%;
-    --radius: 0.75rem;
-    --sidebar-background: 222 47% 6%;
-    --sidebar-foreground: 213 31% 91%;
-    --sidebar-border: 222 47% 11%;
-    --sidebar-accent: 239 84% 67%;
+    /* ── Healthcare brand: Emerald/Teal default ── */
+    --background:            220 20% 4%;
+    --foreground:            210 20% 93%;
+    --card:                  220 20% 6%;
+    --card-foreground:       210 20% 93%;
+    --popover:               220 20% 6%;
+    --popover-foreground:    210 20% 93%;
+    --primary:               160 84% 39%;
+    --primary-foreground:    0 0% 100%;
+    --secondary:             220 20% 10%;
+    --secondary-foreground:  210 20% 93%;
+    --muted:                 220 20% 10%;
+    --muted-foreground:      215 14% 50%;
+    --accent:                186 94% 41%;
+    --accent-foreground:     0 0% 100%;
+    --destructive:           0 62% 40%;
+    --destructive-foreground:0 0% 100%;
+    --border:                220 20% 12%;
+    --input:                 220 20% 12%;
+    --ring:                  160 84% 39%;
+    --radius:                0.875rem;
+    --sidebar-background:    220 20% 5%;
+    --sidebar-foreground:    210 20% 93%;
+    --sidebar-border:        220 20% 10%;
+    --sidebar-accent:        160 84% 39%;
     --sidebar-accent-foreground: 0 0% 100%;
 
-    /* Glass surface: rgba over background */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-hover-bg: rgba(255, 255, 255, 0.05);
-    --glass-hover-border: rgba(255, 255, 255, 0.12);
+    /* Glass surface */
+    --glass-bg:              rgba(255, 255, 255, 0.025);
+    --glass-border:          rgba(255, 255, 255, 0.07);
+    --glass-hover-bg:        rgba(255, 255, 255, 0.045);
+    --glass-hover-border:    rgba(255, 255, 255, 0.11);
 
-    /* Chart colors — used in all Recharts components */
-    --chart-grid: hsl(222 47% 13%);
-    --chart-text: hsl(215 16% 47%);
+    /* Chart colors */
+    --chart-grid:            hsl(220 20% 12%);
+    --chart-text:            hsl(215 14% 50%);
+
+    /* Gradient */
+    --gradient-from:         hsl(160 84% 39%);
+    --gradient-to:           hsl(186 94% 41%);
   }
 }
 
 @layer base {
   * { @apply border-border; }
+
+  html {
+    font-feature-settings: "cv11", "ss01";
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" 32;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { @apply bg-transparent; }
-  ::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
-  ::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/50; }
+
+  /* Premium scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
+  }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring) / 0.7);
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {
+  /* Glass morphism — theme-aware */
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
     border: 1px solid var(--glass-border);
   }
   .glass-hover {
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .glass-hover:hover {
     background: var(--glass-hover-bg);
     border-color: var(--glass-hover-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   }
+
+  /* Primary gradient — updates with accent system */
   .gradient-primary {
-    background: linear-gradient(135deg, var(--gradient-from, hsl(239 84% 67%)) 0%, var(--gradient-to, hsl(189 94% 43%)) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--gradient-from, hsl(160 84% 39%)) 0%,
+      var(--gradient-to, hsl(186 94% 41%)) 100%
+    );
+  }
+  .gradient-primary-soft {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--gradient-from, hsl(160 84% 39%)) 15%, transparent) 0%,
+      color-mix(in srgb, var(--gradient-to, hsl(186 94% 41%)) 10%, transparent) 100%
+    );
   }
   .gradient-text {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, var(--gradient-from, hsl(239 84% 67%)) 0%, var(--gradient-to, hsl(189 94% 43%)) 100%);
+    background-image: linear-gradient(
+      135deg,
+      var(--gradient-from, hsl(160 84% 39%)) 0%,
+      var(--gradient-to, hsl(186 94% 41%)) 100%
+    );
   }
+
+  /* Card elevation system */
+  .card-elevated {
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.3),
+      0 4px 16px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card-interactive {
+    @apply transition-all duration-200 cursor-pointer;
+  }
+  .card-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.3),
+      0 12px 32px rgba(0,0,0,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  /* Status dot pulse */
+  .status-dot-pulse {
+    animation: status-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Shimmer loading */
   .shimmer {
     position: relative;
     overflow: hidden;
@@ -86,7 +155,36 @@
     position: absolute;
     inset: 0;
     transform: translateX(-100%);
-    background: linear-gradient(90deg, transparent, var(--shimmer-highlight, rgba(255,255,255,0.04)), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--shimmer-highlight, rgba(255,255,255,0.04)),
+      transparent
+    );
     animation: shimmer 2s infinite;
   }
+
+  /* Healthcare-specific utilities */
+  .stat-label {
+    @apply text-[11px] font-medium uppercase tracking-widest text-muted-foreground;
+  }
+  .section-title {
+    @apply text-lg font-semibold tracking-tight;
+  }
+  .page-title {
+    @apply text-2xl font-bold tracking-tight;
+  }
+}
+
+/* Keyframes */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
