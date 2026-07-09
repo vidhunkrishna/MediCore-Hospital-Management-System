@@ -55,3 +55,37 @@ export function useRecentPatients() {
     staleTime: 30_000,
   });
 }
+
+export interface OccupancyPoint {
+  date: string;
+  occupancy: number;
+  admissions: number;
+  discharges: number;
+}
+
+export function useOccupancyTrend() {
+  return useQuery({
+    queryKey: ['analytics', 'occupancy'],
+    queryFn: async () => {
+      const res = await api.get<{ success: boolean; data: OccupancyPoint[] }>('/analytics/occupancy');
+      return res.data.data;
+    },
+    staleTime: 60_000,
+  });
+}
+
+export interface AppointmentVolumeResponse {
+  data: Record<string, unknown>[];
+  departments: string[];
+}
+
+export function useAppointmentVolume() {
+  return useQuery({
+    queryKey: ['analytics', 'appointments'],
+    queryFn: async () => {
+      const res = await api.get<{ success: boolean; data: AppointmentVolumeResponse }>('/analytics/appointments');
+      return res.data.data;
+    },
+    staleTime: 60_000,
+  });
+}

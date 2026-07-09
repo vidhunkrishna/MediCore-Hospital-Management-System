@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { ToastContainer } from '@/components/shared/ToastContainer';
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import { useUIStore } from '@/store/ui.store';
 
 export function AppLayout() {
@@ -27,10 +29,12 @@ export function AppLayout() {
             transition={{ duration: 0.2 }}
             className="p-6"
           >
-            <Outlet />
-          </motion.div>
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary></motion.div>
         </AnimatePresence>
       </motion.main>
+      <ToastContainer />
     </div>
   );
 }

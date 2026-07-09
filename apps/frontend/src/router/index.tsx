@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthGuard } from './AuthGuard';
 import { LoginPage } from '@/pages/auth/LoginPage';
+import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { PatientsPage } from '@/pages/patients/PatientsPage';
 import { AppointmentsPage } from '@/pages/appointments/AppointmentsPage';
@@ -13,6 +14,7 @@ import { SettingsPage } from '@/pages/settings/SettingsPage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
   {
     element: <AuthGuard><AppLayout /></AuthGuard>,
     children: [
