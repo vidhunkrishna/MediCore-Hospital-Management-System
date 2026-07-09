@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("RECEPTIONIST")
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  patients     Patient[]
+  appointments Appointment[] @relation("DoctorAppointments")
+  staffProfile Staff?
+}
+
+model Department {
+  id       String @id @default(cuid())
+  name     String
+  capacity Int    @default(50)
+  floor    Int    @default(1)
+  color    String @default("#6366f1")
+
+  wards        Ward[]
+  appointments Appointment[]
+  equipment    Equipment[]
+  staff        Staff[]
+}
+
+model Ward {
+  id           String     @id @default(cuid())
+  name         String
+  floor        Int        @default(1)
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+  beds         Bed[]
+}
+
+model Bed {
+  id     String @id @default(cuid())
+  number String
+  ward   Ward   @relation(fields: [wardId], references: [id])
+  wardId String
+  status String @default("AVAILABLE")
+  type   String @default("GENERAL")
+
+  patients Patient[]
+}
+
+model Patient {
+  id               String    @id @default(cuid())
+  mrn              String    @unique
+  firstName        String
+  lastName         String
+  dob              DateTime
+  gender           String
+  bloodType        String?
+  phone            String
+  email            String?
+  address          String?
+  emergencyContact String?
+  status           String    @default("OUTPATIENT")
+  doctor           User?     @relation(fields: [doctorId], references: [id])
+  doctorId         String?
+  bed              Bed?      @relation(fields: [bedId], references: [id])
+  bedId            String?
+  admittedAt       DateTime?
+  dischargedAt     DateTime?
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id           String     @id @default(cuid())
+  patient      Patient    @relation(fields: [patientId], references: [id])
+  patientId    String
+  doctor       User       @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  doctorId     String
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+  scheduledAt  DateTime
+  duration     Int        @default(30)
+  status       String     @default("SCHEDULED")
+  type         String     @default("CONSULTATION")
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Equipment {
+  id           String    @id @default(cuid())
+  name         String
+  category     String
+  serialNo     String    @unique
+  status       String    @default("OPERATIONAL")
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+  lastServiced DateTime?
+  nextService  DateTime?
+  createdAt    DateTime  @default(now())
+}
+
+model Staff {
+  id           String     @id @default(cuid())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String     @unique
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+  shift        String     @default("MORNING")
+  available    Boolean    @default(true)
+}
+
+model Alert {
+  id           String   @id @default(cuid())
+  type         String
+  severity     String   @default("LOW")
+  message      String
+  resourceType String?
+  resourceId   String?
+  resolved     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}

@@ -1,0 +1,36 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Kironomics Tool Counter",
+      "trigger": "PostToolUse",
+      "matcher": ".*",
+      "description": "Silently counts tool calls for the Kironomics leaderboard.",
+      "action": {
+        "type": "command",
+        "command": "python -c \"import pathlib; f=pathlib.Path('C:/Windows/Temp/kironomics_tools'); f.write_text(str(int(f.read_text().strip()) + 1) if f.exists() else '1')\"",
+        "timeout": 2
+      }
+    },
+    {
+      "name": "Kironomics Prompt Counter",
+      "trigger": "UserPromptSubmit",
+      "description": "Silently counts prompts and records session start time.",
+      "action": {
+        "type": "command",
+        "command": "python -c \"import pathlib, time; st=pathlib.Path('C:/Windows/Temp/kironomics_start'); st.write_text(str(int(time.time()))) if not st.exists() else None; pf=pathlib.Path('C:/Windows/Temp/kironomics_prompts'); pf.write_text(str(int(pf.read_text().strip()) + 1) if pf.exists() else '1')\"",
+        "timeout": 2
+      }
+    },
+    {
+      "name": "Kironomics Session Reporter",
+      "trigger": "Stop",
+      "description": "Reads Kiro's credit usage and sends session data to the backend when the agent finishes.",
+      "action": {
+        "type": "command",
+        "command": "python \"C:\\Users\\vidhu\\OneDrive\\Desktop\\kiro\\.kiro\\kironomics_report.py\"",
+        "timeout": 10
+      }
+    }
+  ]
+}
